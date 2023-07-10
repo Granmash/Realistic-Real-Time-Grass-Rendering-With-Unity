@@ -7,6 +7,9 @@ public class NewBehaviourScript : MonoBehaviour
 {
     private List<Vector3> verts = new List<Vector3>();
 
+    public GameObject plane;
+
+    public Material grassmat;
 //生成草地
     private void grassYield(int grassPatchRowCount, int grassCountPerPatch)
     {
@@ -17,16 +20,12 @@ public class NewBehaviourScript : MonoBehaviour
             indices.Add(i);
         }
 
-        GameObject plane = new GameObject("groundplane");
-        plane.AddComponent<MeshFilter>();
-        MeshRenderer renderer2 = plane.AddComponent<MeshRenderer>();
         
-        Vector3 startposition = new Vector3(0, 0, 0);
+        Vector3 startposition = new Vector3((float)0, (float)0,(float)0);
         Vector3 pacthsize = new Vector3((plane.GetComponent<MeshFilter>().mesh.bounds.size.x*plane.transform.localScale.x) / grassPatchRowCount, 0, (plane.GetComponent<MeshFilter>().mesh.bounds.size.z*plane.transform.localScale.z)/grassPatchRowCount);
-
-        for (int x = 0; x < grassPatchRowCount; x++)
+        for (double x = 0; x < grassPatchRowCount; x++)
         {
-            for (int y = 0; y < grassPatchRowCount; y++)
+            for (double y = 0; y < grassPatchRowCount; y++)
             {
                 this.generateGrass(startposition, pacthsize, grassPatchRowCount);
                 startposition.x += pacthsize.x;
@@ -50,6 +49,7 @@ public class NewBehaviourScript : MonoBehaviour
             grasslayer = new GameObject("grasslayer");
             mf = grasslayer.AddComponent<MeshFilter>();
             renderer = grasslayer.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = grassmat;
             mf.mesh = m;
             verts.RemoveRange(0,65000);
         }
@@ -59,6 +59,7 @@ public class NewBehaviourScript : MonoBehaviour
         grasslayer = new GameObject("grassLayer");
         mf = grasslayer.AddComponent<MeshFilter>();
         renderer = grasslayer.AddComponent<MeshRenderer>();
+        renderer.sharedMaterial = grassmat;
         mf.mesh = m;
         
         return;
@@ -68,18 +69,18 @@ public class NewBehaviourScript : MonoBehaviour
     {
         for (int i = 0; i < grasscountprePatch; i++)
         {
-            var Xdistance = 0.5 * patchsize.z;
-            var Zdistance = 0.5 * patchsize.x;
-            int indexX = (int)((startPosition.x + Xdistance));
-            int indexZ = (int)((startPosition.z + Zdistance));
+            var Xdistance =patchsize.x;
+            var Zdistance =patchsize.z;
+            var indexX = (double)((startPosition.x + Xdistance));
+            var indexZ = (double)((startPosition.z + Zdistance));
             if (indexX > plane.GetComponent<MeshFilter>().mesh.bounds.size.x)
             {
-                indexX = (int)(plane.GetComponent<MeshFilter>().mesh.bounds.size.x) - 1;
+                indexX = (double)(plane.GetComponent<MeshFilter>().mesh.bounds.size.x*plane.transform.localScale.x) - 1;
             }
 
             if (indexZ > plane.GetComponent<MeshFilter>().mesh.bounds.size.z)
             {
-                indexZ = (int)(plane.GetComponent<MeshFilter>().mesh.bounds.size.z) - 1;
+                indexZ = (double)(plane.GetComponent<MeshFilter>().mesh.bounds.size.z*plane.transform.localScale.z) - 1;
             }
 
             var currentPosition = new Vector3(startPosition.x + (float)Xdistance, 0, startPosition.z + (float)Zdistance);
@@ -89,7 +90,6 @@ public class NewBehaviourScript : MonoBehaviour
 
     private void Start()
     {
-        plane = GetComponent<GameObject>();
-        grassYield(30,50);
+        grassYield(160,240);
     }
 }

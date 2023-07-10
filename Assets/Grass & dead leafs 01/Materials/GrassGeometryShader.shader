@@ -4,7 +4,7 @@
 		_MainTex("Albedo (RGB)", 2D) = "white" {}
 		_AlphaTex("Alpha (A)", 2D) = "white" {}
 		_Height("Grass Height", float) = 3
-		_Width("Grass Width", range(0, 0.1)) = 0.05
+		_Width("Grass Width", range(0, 10)) = 0.05
 
 	}
 	SubShader{
